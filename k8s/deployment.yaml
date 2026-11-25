@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsu-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devsu-app
+  template:
+    metadata:
+      labels:
+        app: devsu-app
+    spec:
+      containers:
+        - name: devsu-app
+
+          image: ivangarcia/devsu-demo-nodejs:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: devsu-config
+            - secretRef:
+                name: devsu-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /api/users
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/users
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5

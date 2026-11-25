@@ -140,3 +140,32 @@ If the response is unsuccessful, we will receive status 400 and the following me
 ## License
 
 Copyright © 2023 Devsu. All rights reserved.
+
+---
+
+## DevOps Implementation - Added for this test
+
+### Architecture and Diagram
+
+Flow implemented for this test:
+
+
+Developer (branch develop)
+
+GitHub -> Push to develop
+
+GitHub Actions (.github/workflows/ci.yml)
+1. Checkout code
+2. Setup Node.js 20
+3. npm ci (Code Build)
+4. ESLint (Static Code Analysis)
+5. npm test -- --coverage (Unit Tests + Coverage)
+6. Upload coverage/ as artifact
+7. Docker Build & Push to Docker Hub
+8. Trivy Vulnerability Scan
+
+Docker Hub: ivangkf323gkf/devsu-demo-nodejs:latest
+
+Kubernetes (Docker Desktop - local)
+Deployment (2 replicas) -> Service (NodePort 30080)
+ConfigMap + Secret -> HPA (2 to 5 replicas) -> Ingress (devsu.local)

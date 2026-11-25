@@ -1,0 +1,25 @@
+# EJEMPLO PARA PRODUCCION - No aplicar en local
+# En produccion usar cert-manager + Let's Encrypt
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: devsu-ingress-tls
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.devsu.local
+      secretName: devsu-tls
+  rules:
+    - host: api.devsu.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: devsu-service
+                port:
+                  number: 8000

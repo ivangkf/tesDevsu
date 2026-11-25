@@ -15,7 +15,7 @@ spec:
       containers:
         - name: devsu-app
 
-          image: ivangarcia/devsu-demo-nodejs:latest
+          image: ivangkf323gkf/devsu-demo-nodejs:latest
           ports:
             - containerPort: 8000
           envFrom:
